@@ -1,18 +1,23 @@
 {
-	"name": "ozdefender-gasless",
-	"version": "0.1.0",
+	"name": "ozdefender-gasless-backend",
+	"version": "1.0.0",
 	"private": true,
 	"scripts": {
-		"build": "npx hardhat compile",
-		"deploy": "npx hardhat run ./scripts/deploy.js --network MATIC_MAINNET",
 		"node": "npx hardhat node",
-		"deploy-local": "npx hardhat run ./scripts/deploy.js --network localhost"
+		"deploy:mumbai": "npx hardhat run ./scripts/deploy.ts --network mumbai",
+		"build": "tsc",
+		"upload": "npm run build && ts-node scripts/upload.ts"
 	},
 	"dependencies": {
 		"dotenv": "^16.0.2"
 	},
 	"devDependencies": {
 		"@nomicfoundation/hardhat-toolbox": "^1.0.2",
-		"hardhat": "^2.10.1"
+		"@openzeppelin/contracts": "^4.9.3",
+		"@openzeppelin/defender-autotask-client": "^1.50.0",
+		"@openzeppelin/defender-relay-client": "^1.50.0",
+		"hardhat": "^2.10.1",
+		"ts-node": "^10.9.1",
+		"typescript": "^5.2.2"
 	}
 }
