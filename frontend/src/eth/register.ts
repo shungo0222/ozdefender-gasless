@@ -17,11 +17,11 @@ async function sendMetaTx(
   const data = registry.interface.encodeFunctionData("register", [name]);
   const to = registry.address;
 
-  const request = await signMetaTxRequest((signer.provider as ethers.providers.JsonRpcProvider), forwarder, { to, from, data });
+  const signedRequest = await signMetaTxRequest((signer.provider as ethers.providers.JsonRpcProvider), forwarder, { to, from, data });
 
   return fetch(url, {
     method: "POST",
-    body: JSON.stringify(request),
+    body: JSON.stringify(signedRequest),
     headers: { "Content-Type": "application/json" },
   });
 }

@@ -13,7 +13,8 @@ interface ForwardRequest {
   to: string;
   value?: number;
   gas?: number;
-  nonce?: string;
+  nonce?: number;
+  deadline?: number;
   data: string;
 }
 
@@ -41,6 +42,7 @@ function getMetaTxTypeData(chainId: number, verifyingContract: string): TypeData
     { name: "value", type: "uint256" },
     { name: "gas", type: "uint256" },
     { name: "nonce", type: "uint256" },
+    { name: "deadline", type: "uint48" },
     { name: "data", type: "bytes" },
   ];
 
@@ -50,8 +52,8 @@ function getMetaTxTypeData(chainId: number, verifyingContract: string): TypeData
       ForwardRequest,
     },
     domain: {
-      name: "MinimalForwarder",
-      version: "0.0.1",
+      name: "ERC2771Forwarder",
+      version: "1",
       chainId,
       verifyingContract,
     },
@@ -73,9 +75,10 @@ async function signTypedData(signer: ethers.providers.JsonRpcProvider | string, 
   return await signer.send(method, [from, argData]);
 }
 
-async function buildRequest(forwarder: Contract, input: ForwardRequest): Promise<ForwardRequest> {
-  const nonce = await forwarder.getNonce(input.from).then((nonce: any) => nonce.toString());
-  return { value: input.value || 0, gas: input.gas || 1e6, nonce, ...input };
+async function buildRequest(forwarder: Contract, input: ForwardRequest) {
+  const deadline = Math.floor(Date.now() / 1000) + 3600; // Add one hour to the current UNIX timestamp
+  const nonce = (await forwarder.nonces(input.from)).toString();
+  return { value: 0, gas: 1e6, deadline, nonce, ...input };
 }
 
 async function buildTypedData(forwarder: Contract, request: ForwardRequest): Promise<TypeData> {
@@ -88,8 +91,11 @@ async function signMetaTxRequest(signer: ethers.providers.JsonRpcProvider | stri
   const request = await buildRequest(forwarder, input);
   const toSign = await buildTypedData(forwarder, request);
   const signature = await signTypedData(signer, input.from, toSign);
+
+  // Add the 'signature' property to the request object
+  const signedRequest = { ...request, signature };
   
-  return { signature, request };
+  return signedRequest;
 }
 
 export {

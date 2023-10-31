@@ -11,15 +11,15 @@ async function main() {
 
   console.log("Deploying contracts with the account:", deployer.address);
 
-  const forwarder = await deploy("MinimalForwarder");
+  const forwarder = await deploy("ERC2771Forwarder", "ERC2771Forwarder");
   const registry = await deploy("Registry", forwarder.address);
 
   writeFileSync("deploy.json", JSON.stringify({
-    MinimalForwarder: forwarder.address,
+    ERC2771Forwarder: forwarder.address,
     Registry: registry.address,
   }, null, 2));
 
-  console.log(`MinimalForwarder: ${forwarder.address}\nRegistry: ${registry.address}`);
+  console.log(`ERC2771Forwarder: ${forwarder.address}\nRegistry: ${registry.address}`);
 }
 
 main()

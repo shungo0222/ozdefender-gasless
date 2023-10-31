@@ -32,6 +32,7 @@ export interface RegistryInterface extends utils.Interface {
     "names(address)": FunctionFragment;
     "owners(string)": FunctionFragment;
     "register(string)": FunctionFragment;
+    "trustedForwarder()": FunctionFragment;
   };
 
   getFunction(
@@ -40,6 +41,7 @@ export interface RegistryInterface extends utils.Interface {
       | "names"
       | "owners"
       | "register"
+      | "trustedForwarder"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -58,6 +60,10 @@ export interface RegistryInterface extends utils.Interface {
     functionFragment: "register",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "trustedForwarder",
+    values?: undefined
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "isTrustedForwarder",
@@ -66,6 +72,10 @@ export interface RegistryInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "names", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owners", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "register", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "trustedForwarder",
+    data: BytesLike
+  ): Result;
 
   events: {
     "Registered(address,string)": EventFragment;
@@ -131,6 +141,8 @@ export interface Registry extends BaseContract {
       name: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    trustedForwarder(overrides?: CallOverrides): Promise<[string]>;
   };
 
   isTrustedForwarder(
@@ -153,6 +165,8 @@ export interface Registry extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  trustedForwarder(overrides?: CallOverrides): Promise<string>;
+
   callStatic: {
     isTrustedForwarder(
       forwarder: PromiseOrValue<string>,
@@ -173,6 +187,8 @@ export interface Registry extends BaseContract {
       name: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    trustedForwarder(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -206,6 +222,8 @@ export interface Registry extends BaseContract {
       name: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    trustedForwarder(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -228,5 +246,7 @@ export interface Registry extends BaseContract {
       name: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    trustedForwarder(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

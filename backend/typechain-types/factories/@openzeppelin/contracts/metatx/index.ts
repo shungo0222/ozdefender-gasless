@@ -2,4 +2,4 @@
 /* tslint:disable */
 /* eslint-disable */
 export { ERC2771Context__factory } from "./ERC2771Context__factory";
-export { MinimalForwarder__factory } from "./MinimalForwarder__factory";
+export { ERC2771Forwarder__factory } from "./ERC2771Forwarder__factory";

@@ -5,7 +5,7 @@ const abi = [
   {
     "inputs": [
       {
-        "internalType": "contract MinimalForwarder",
+        "internalType": "contract ERC2771Forwarder",
         "name": "forwarder",
         "type": "address"
       }
@@ -100,6 +100,19 @@ const abi = [
     "name": "register",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "trustedForwarder",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   }
 ];

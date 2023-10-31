@@ -20,43 +20,29 @@ import type {
   PromiseOrValue,
 } from "../../../common";
 
-export interface ERC2771ContextInterface extends utils.Interface {
+export interface NoncesInterface extends utils.Interface {
   functions: {
-    "isTrustedForwarder(address)": FunctionFragment;
-    "trustedForwarder()": FunctionFragment;
+    "nonces(address)": FunctionFragment;
   };
 
-  getFunction(
-    nameOrSignatureOrTopic: "isTrustedForwarder" | "trustedForwarder"
-  ): FunctionFragment;
+  getFunction(nameOrSignatureOrTopic: "nonces"): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "isTrustedForwarder",
+    functionFragment: "nonces",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "trustedForwarder",
-    values?: undefined
-  ): string;
 
-  decodeFunctionResult(
-    functionFragment: "isTrustedForwarder",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "trustedForwarder",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
 
   events: {};
 }
 
-export interface ERC2771Context extends BaseContract {
+export interface Nonces extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: ERC2771ContextInterface;
+  interface: NoncesInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -78,47 +64,37 @@ export interface ERC2771Context extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    isTrustedForwarder(
-      forwarder: PromiseOrValue<string>,
+    nonces(
+      owner: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    trustedForwarder(overrides?: CallOverrides): Promise<[string]>;
+    ): Promise<[BigNumber]>;
   };
 
-  isTrustedForwarder(
-    forwarder: PromiseOrValue<string>,
+  nonces(
+    owner: PromiseOrValue<string>,
     overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  trustedForwarder(overrides?: CallOverrides): Promise<string>;
+  ): Promise<BigNumber>;
 
   callStatic: {
-    isTrustedForwarder(
-      forwarder: PromiseOrValue<string>,
+    nonces(
+      owner: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    trustedForwarder(overrides?: CallOverrides): Promise<string>;
+    ): Promise<BigNumber>;
   };
 
   filters: {};
 
   estimateGas: {
-    isTrustedForwarder(
-      forwarder: PromiseOrValue<string>,
+    nonces(
+      owner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    trustedForwarder(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    isTrustedForwarder(
-      forwarder: PromiseOrValue<string>,
+    nonces(
+      owner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    trustedForwarder(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }
